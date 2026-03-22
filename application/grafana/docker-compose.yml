@@ -39,11 +39,11 @@ services:
     image: prompve/prometheus-pve-exporter:latest
     container_name: pve_exporter
     network_mode: "host"                                # Host Networking für LAN-Zugriff
+    volumes:
+      - ./prometheus/pve.yml:/etc/pve.yml:ro
+    command: ["--config.file", "/etc/pve.yml", "--web.listen-address", "0.0.0.0:9221"]
     environment:
-      PVE_USER: "monitoring@pve"
-      PVE_TOKEN_NAME: "grafana-token"
-      PVE_TOKEN_VALUE: "3ea41ef8-aaf1-4af8-a6a9-65a65a667830"
-      PVE_VERIFY_SSL: "false"
+      PVE_VERIFY_SSL: "false"                        # optional; ggf. bereits über pve.yml
     restart: unless-stopped
 
 # -------------------------
