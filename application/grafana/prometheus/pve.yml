@@ -1,5 +1,5 @@
 default:
   user: "monitoring@pve"
   token_name: "grafana-token"
-  token_value: "3ea41ef8-aaf1-4af8-a6a9-65a65a667830"
+  token_value: "ef16ebcd-a594-4f3e-afa3-090ca6a5faa7"
   verify_ssl: false
