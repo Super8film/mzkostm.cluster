@@ -1,8 +1,8 @@
 global:
   scrape_interval: 15s
+  scrape_timeout: 10s
 
 scrape_configs:
-  - job_name: 'proxmox'
+  - job_name: 'pve_exporter'
     static_configs:
-      - targets:
-          - 'pve_exporter:9221'
+      - targets: ['192.168.178.123:9221']   # <- Host-IP des PVE Exporters
