@@ -5,6 +5,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
+      - prometheus-data:/prometheus                      # Persistente Daten
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
@@ -16,19 +17,26 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana                   # Persistente Dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro # Optional: Provisioning
     ports:
       - "3000:3000"
-    restart: unless-stopped
     depends_on:
       - prometheus
+    restart: unless-stopped
 
   pve_exporter:
     image: prompve/prometheus-pve-exporter:latest
     container_name: pve_exporter
     environment:
-      PVE_USER: monitoring@pve
-      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4
+      PVE_USER: monitoring@pve!grafana-token             # USER!TOKEN Format
+      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4 # Dein API Token
       PVE_VERIFY_SSL: "false"
     ports:
       - "9221:9221"
     restart: unless-stopped
+
+volumes:
+  prometheus-data:
+  grafana-data:
