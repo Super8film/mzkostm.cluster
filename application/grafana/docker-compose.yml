@@ -1,24 +1,30 @@
 version: "3.8"
 
 services:
+  # -------------------------
+  # Prometheus Service
+  # -------------------------
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - prometheus-data:/prometheus                      # Persistente Daten
+      - prometheus-data:/prometheus                     # Persistente Daten
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
     restart: unless-stopped
 
+  # -------------------------
+  # Grafana Service
+  # -------------------------
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
-      - grafana-data:/var/lib/grafana                   # Persistente Dashboards
+      - grafana-data:/var/lib/grafana                    # Persistente Dashboards
       - ./grafana/provisioning:/etc/grafana/provisioning:ro # Optional: Provisioning
     ports:
       - "3000:3000"
@@ -26,18 +32,23 @@ services:
       - prometheus
     restart: unless-stopped
 
+  # -------------------------
+  # Proxmox Exporter
+  # -------------------------
   pve_exporter:
     image: prompve/prometheus-pve-exporter:latest
     container_name: pve_exporter
-    network_mode: "host"
+    network_mode: "host"                                # Host Networking für volle LAN-Reichweite
     environment:
-      PVE_USER: monitoring@pve!grafana-token             # USER!TOKEN Format
-      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4 # Dein API Token
+      PVE_USER: monitoring@pve!grafana-token           # Cluster Token USER!TOKEN
+      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4
       PVE_VERIFY_SSL: "false"
-    ports:
-      - "9221:9221"
     restart: unless-stopped
+    # ⚠️ ports entfernt, weil network_mode: host
 
+# -------------------------
+# Persistente Volumes
+# -------------------------
 volumes:
   prometheus-data:
   grafana-data:
