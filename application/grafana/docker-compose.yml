@@ -29,6 +29,7 @@ services:
   pve_exporter:
     image: prompve/prometheus-pve-exporter:latest
     container_name: pve_exporter
+    network_mode: "host"
     environment:
       PVE_USER: monitoring@pve!grafana-token             # USER!TOKEN Format
       PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4 # Dein API Token
