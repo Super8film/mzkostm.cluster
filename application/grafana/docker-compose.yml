@@ -40,8 +40,8 @@ services:
     container_name: pve_exporter
     network_mode: "host"                                # Host Networking für volle LAN-Reichweite
     environment:
-      PVE_USER: monitoring@pve!grafana-token           # Cluster Token USER!TOKEN
-      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4
+      PVE_USER: monitoring@pve!grafana-token
+      PVE_PASSWORD: 3ea41ef8-aaf1-4af8-a6a9-65a65a667830
       PVE_VERIFY_SSL: "false"
     restart: unless-stopped
     # ⚠️ ports entfernt, weil network_mode: host
