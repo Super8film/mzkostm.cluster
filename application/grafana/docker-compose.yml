@@ -26,8 +26,8 @@ services:
     image: prompve/prometheus-pve-exporter:latest
     container_name: pve_exporter
     environment:
-      PVE_USER: monitor@pve
-      PVE_PASSWORD: newbie1987
+      PVE_USER: monitoring@pve
+      PVE_PASSWORD: 2089cfab-42bd-49d5-85f9-290219b5cfd4
       PVE_VERIFY_SSL: "false"
     ports:
       - "9221:9221"
